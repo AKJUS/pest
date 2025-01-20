@@ -115,7 +115,7 @@ final class JunitXmlLogger
 
     public function flush(): void
     {
-        $this->printer->print($this->document->saveXML());
+        $this->printer->print($this->document->saveXML() ?: '');
 
         $this->printer->flush();
     }
