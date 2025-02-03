@@ -286,7 +286,7 @@ final readonly class OppositeExpectation
             $methods === []
                 ? 'not to have public methods'
                 : sprintf("not to have public methods besides '%s'", implode("', '", $methods)),
-            FileLineFinder::where(fn (string $line): bool => str_contains($line, $state->contains)),
+            FileLineFinder::where(fn (string $line): bool => str_contains($line, (string) $state->contains)),
         );
     }
 
@@ -329,7 +329,7 @@ final readonly class OppositeExpectation
             $methods === []
                 ? 'not to have protected methods'
                 : sprintf("not to have protected methods besides '%s'", implode("', '", $methods)),
-            FileLineFinder::where(fn (string $line): bool => str_contains($line, $state->contains)),
+            FileLineFinder::where(fn (string $line): bool => str_contains($line, (string) $state->contains)),
         );
     }
 
@@ -372,7 +372,7 @@ final readonly class OppositeExpectation
             $methods === []
                 ? 'not to have private methods'
                 : sprintf("not to have private methods besides '%s'", implode("', '", $methods)),
-            FileLineFinder::where(fn (string $line): bool => str_contains($line, $state->contains)),
+            FileLineFinder::where(fn (string $line): bool => str_contains($line, (string) $state->contains)),
         );
     }
 
