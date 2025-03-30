@@ -24,7 +24,7 @@ final readonly class Thanks
      */
     private const FUNDING_MESSAGES = [
         'Star' => 'https://github.com/pestphp/pest',
-        'News' => 'https://twitter.com/pestphp',
+        'News' => 'https://x.com/enunomaduro',
         'Videos' => 'https://youtube.com/@nunomaduro',
         'Sponsor' => 'https://github.com/sponsors/nunomaduro',
     ];
