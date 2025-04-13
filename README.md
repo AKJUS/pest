@@ -34,17 +34,16 @@ We cannot thank our sponsors enough for their incredible support in funding Pest
 
 ### Gold Sponsors
 
-- **[CodeRabbit](https://coderabbit.ai/?ref=pestphp)**
-- **[LaraJobs](https://larajobs.com/?ref=pestphp)**
 - **[Brokerchooser](https://brokerchooser.com/?ref=pestphp)**
-- **[Forge](https://forge.laravel.com/?ref=pestphp)**
+- **[CodeRabbit](https://coderabbit.ai/?ref=pestphp)**
+- **[NativePHP](https://nativephp.com/mobile?ref=pestphp.com)**
 
 ### Premium Sponsors
 
 - [Akaunting](https://akaunting.com/?ref=pestphp)
-- [Codecourse](https://codecourse.com/?ref=pestphp)
 - [DocuWriter.ai](https://www.docuwriter.ai/?ref=pestphp)
 - [Localazy](https://localazy.com/?ref=pestphp)
+- [Forge](https://forge.laravel.com/?ref=pestphp)
 - [Route4Me](https://www.route4me.com/?ref=pestphp)
 - [Spatie](https://spatie.be/?ref=pestphp)
 - [Worksome](https://www.worksome.com/?ref=pestphp)
