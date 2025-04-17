@@ -193,7 +193,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! enum_exists($object->name) && ! $object->reflectionClass->isFinal(),
+            fn (ObjectDescription $object): bool => ! enum_exists($object->name) && (isset($object->reflectionClass) === false || ! $object->reflectionClass->isFinal()),
             'not to be final',
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -209,7 +209,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! enum_exists($object->name) && ! $object->reflectionClass->isReadOnly() && assert(true), // @phpstan-ignore-line
+            fn (ObjectDescription $object): bool => ! enum_exists($object->name) && (isset($object->reflectionClass) === false || ! $object->reflectionClass->isReadOnly()) && assert(true), // @phpstan-ignore-line
             'not to be readonly',
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -225,7 +225,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! $object->reflectionClass->isTrait(),
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || ! $object->reflectionClass->isTrait(),
             'not to be trait',
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -249,7 +249,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! $object->reflectionClass->isAbstract(),
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || ! $object->reflectionClass->isAbstract(),
             'not to be abstract',
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -271,7 +271,7 @@ final readonly class OppositeExpectation
             $original,
             fn (ObjectDescription $object): bool => array_filter(
                 $methods,
-                fn (string $method): bool => $object->reflectionClass->hasMethod($method),
+                fn (string $method): bool => isset($object->reflectionClass) === false || $object->reflectionClass->hasMethod($method),
             ) === [],
             'to not have methods: '.implode(', ', $methods),
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
@@ -436,7 +436,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! $object->reflectionClass->isEnum(),
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || ! $object->reflectionClass->isEnum(),
             'not to be enum',
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -484,7 +484,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! $object->reflectionClass->isInterface(),
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || ! $object->reflectionClass->isInterface(),
             'not to be interface',
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -508,7 +508,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! $object->reflectionClass->isSubclassOf($class),
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || ! $object->reflectionClass->isSubclassOf($class),
             sprintf("not to extend '%s'", $class),
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -524,7 +524,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => $object->reflectionClass->getParentClass() !== false,
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || $object->reflectionClass->getParentClass() !== false,
             'to extend a class',
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -554,7 +554,7 @@ final readonly class OppositeExpectation
             $original,
             function (ObjectDescription $object) use ($traits): bool {
                 foreach ($traits as $trait) {
-                    if (in_array($trait, $object->reflectionClass->getTraitNames(), true)) {
+                    if (isset($object->reflectionClass) && in_array($trait, $object->reflectionClass->getTraitNames(), true)) {
                         return false;
                     }
                 }
@@ -582,7 +582,7 @@ final readonly class OppositeExpectation
             $original,
             function (ObjectDescription $object) use ($interfaces): bool {
                 foreach ($interfaces as $interface) {
-                    if ($object->reflectionClass->implementsInterface($interface)) {
+                    if (isset($object->reflectionClass) && $object->reflectionClass->implementsInterface($interface)) {
                         return false;
                     }
                 }
@@ -604,7 +604,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => $object->reflectionClass->getInterfaceNames() !== [],
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || $object->reflectionClass->getInterfaceNames() !== [],
             'to implement an interface',
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -628,7 +628,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! str_starts_with($object->reflectionClass->getShortName(), $prefix),
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || ! str_starts_with($object->reflectionClass->getShortName(), $prefix),
             "not to have prefix '{$prefix}'",
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -644,7 +644,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! str_ends_with($object->reflectionClass->getName(), $suffix),
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || ! str_ends_with($object->reflectionClass->getName(), $suffix),
             "not to have suffix '{$suffix}'",
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class')),
         );
@@ -715,7 +715,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! $object->reflectionClass->hasMethod('__invoke'),
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || ! $object->reflectionClass->hasMethod('__invoke'),
             'to not be invokable',
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class'))
         );
@@ -731,7 +731,7 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => $object->reflectionClass->getAttributes($attribute) === [],
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false || $object->reflectionClass->getAttributes($attribute) === [],
             "to not have attribute '{$attribute}'",
             FileLineFinder::where(fn (string $line): bool => str_contains($line, 'class'))
         );
@@ -826,7 +826,8 @@ final readonly class OppositeExpectation
 
         return Targeted::make(
             $original,
-            fn (ObjectDescription $object): bool => ! $object->reflectionClass->isEnum()
+            fn (ObjectDescription $object): bool => isset($object->reflectionClass) === false
+                || ! $object->reflectionClass->isEnum()
                 || ! (new \ReflectionEnum($object->name))->isBacked() // @phpstan-ignore-line
                 || (string) (new \ReflectionEnum($object->name))->getBackingType() !== $backingType, // @phpstan-ignore-line
             'not to be '.$backingType.' backed enum',
