@@ -167,5 +167,11 @@ final class Laravel extends AbstractPreset
         $this->expectations[] = expect('App\Policies')
             ->classes()
             ->toHaveSuffix('Policy');
+
+        $this->expectations[] = expect('App\Attributes')
+            ->classes()
+            ->toImplement('Illuminate\Contracts\Container\ContextualAttribute')
+            ->toHaveAttribute('Attribute')
+            ->toHaveMethod('resolve');
     }
 }
